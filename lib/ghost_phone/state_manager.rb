@@ -14,8 +14,6 @@ module GhostPhone
 
     NUMERIC = /\d/
 
-    class TransitionError < StandardError; end
-
     attr_reader :state, :event, :key
 
     def initialize
@@ -88,7 +86,7 @@ module GhostPhone
     end
 
     def stop_tone?
-      (dialing? || recording? || hangup?) && key_released? && key_tone?
+      hangup? || ((dialing? || recording?) && key_released? && key_tone?)
     end
 
     # -----------------------------------------------------
@@ -113,7 +111,10 @@ module GhostPhone
       if state == STATE_DIALING
         @state = STATE_RECORDING
       else
-        raise TransitionError, "One or more numbers must first be entered."
+
+        # Just start over if we get here!
+        reset
+        pickup
       end
     end
   end
