@@ -57,8 +57,8 @@ module GhostPhone
 
     def stop
       @serial.stop
-      stop_tone
-      stop_recording
+      @sound.shutdown   if @sound
+      @message.shutdown if @message
     end
 
     def update(value)
