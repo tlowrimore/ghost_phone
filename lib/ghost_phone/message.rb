@@ -29,11 +29,13 @@ module GhostPhone
 
     def stop
       GhostPhone.logger.info "--- recorder stopping"
+      Process.detach(@pid)
       Process.kill("HUP", @pid) if @pid
     end
 
     def shutdown
       GhostPhone.logger.info "--- recorder shutdown"
+      Process.detach(@pid)
       Process.kill("HUP", @pid) if @pid
     end
   end

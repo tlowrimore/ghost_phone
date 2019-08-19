@@ -39,11 +39,13 @@ module GhostPhone
 
     def stop
       GhostPhone.logger.info "--- sound stopping"
+      Process.detach(@pid)
       Process.kill("HUP", @pid) if @pid
     end
 
     def shutdown
       GhostPhone.logger.info "--- shutting down sound player"
+      Process.detach(@pid)
       Process.kill("HUP", @pid) if @pid
     end
   end
