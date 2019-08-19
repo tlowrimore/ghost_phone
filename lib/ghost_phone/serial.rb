@@ -26,8 +26,8 @@ module GhostPhone
       @monitor = Thread.new(reader, block) do |reader, callback|
         GhostPhone.logger.info "--- monitor thread started"
         while true
-          value = reader.gets.chomp
-          callback.(value)
+          value = reader.gets
+          callback.(value.chomp) unless value.nil?
         end
       end
       GhostPhone.logger.info "--- monitor thread joining"
