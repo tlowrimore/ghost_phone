@@ -35,7 +35,7 @@ module GhostPhone
         end
 
       elsif event == EVENT_RELEASE
-        reset
+        reset if key_hook?
       end
 
       self
@@ -79,6 +79,10 @@ module GhostPhone
 
     def key_tone?
       key != KEY_HOOK
+    end
+
+    def key_hook?
+      key == KEY_HOOK
     end
 
     def play_tone?
