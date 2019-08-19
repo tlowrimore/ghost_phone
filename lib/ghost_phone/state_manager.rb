@@ -100,14 +100,15 @@ module GhostPhone
     private
 
     def pickup
-      @state = STATE_READY_FOR_INPUT
+      @state  = STATE_READY_FOR_INPUT
+      @key    = KEY_HOOK
     end
 
     def dial(key)
       if state == STATE_READY_FOR_INPUT || state == STATE_DIALING
         @state            = STATE_DIALING
         @key              = key
-        @file_name_buffer << key unless key == KEY_HASH
+        @file_name_buffer << key if key.to_s =~ NUMERIC
       end
     end
 
