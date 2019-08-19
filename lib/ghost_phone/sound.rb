@@ -12,8 +12,8 @@ module GhostPhone
     attr_reader :name
 
     def initialize(name)
-      @name = name
-      @pid  = nil
+      @name   = name
+      @thread = nil
     end
 
     def file_name
@@ -28,25 +28,19 @@ module GhostPhone
     end
 
     def play
-      @pid = fork do
-        Signal.trap("HUP") do
-          exit
-        end
-
-        exec "aplay #{file_path}"
+      @thread ||= Thread.new do
+        `aplay #{file_path}`
       end
     end
 
     def stop
       GhostPhone.logger.info "--- sound stopping"
-      Process.detach(@pid)
-      Process.kill("HUP", @pid) if @pid
+      @thread.kill if @thread
     end
 
     def shutdown
       GhostPhone.logger.info "--- shutting down sound player"
-      Process.detach(@pid)
-      Process.kill("HUP", @pid) if @pid
+      @thread.kill if @thread
     end
   end
 end
