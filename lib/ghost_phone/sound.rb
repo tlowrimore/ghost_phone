@@ -34,7 +34,7 @@ module GhostPhone
     end
 
     def stop
-      return if @pid.nil
+      return if @pid.nil?
 
       GhostPhone.logger.info "--- sound stopping"
       Process.kill("HUP", @pid)
