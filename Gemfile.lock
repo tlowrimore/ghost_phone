@@ -1,21 +1,13 @@
 GEM
   remote: https://rubygems.org/
   specs:
-    easy_audio (0.1.0)
-      ffi-portaudio (~> 0.0)
-    ffi (1.11.1)
-    ffi-portaudio (0.1.2)
-      ffi
     serialport (1.3.1)
-    wavefile (1.1.0)
 
 PLATFORMS
   ruby
 
 DEPENDENCIES
-  easy_audio
   serialport
-  wavefile
 
 BUNDLED WITH
    1.17.2

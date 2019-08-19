@@ -1,19 +1,19 @@
-require 'easy_audio'
-require 'wavefile'
-
 module GhostPhone
   class Sound
     SOUND_DIR = 'data/sound'
+
+    DIAL_TONE = 'dial'
+    
     NAME_MAP  = {
       '#' => 'hash',
-      '*' => 'star',
-      'h' => 'dial'
+      '*' => 'star'
     }
 
     attr_reader :name
 
     def initialize(name)
       @name = name
+      @pid  = nil
     end
 
     def file_name
