@@ -35,17 +35,20 @@ module GhostPhone
     return if @runner
 
     @runner = Runner.new
-    @runner.start
 
     Signal.trap("INT") do
       logger.info '--- shutting down'
       @runner.stop
+      @runner = nil
     end
 
     Signal.trap("TERM") do
       logger.warn '--- terminating!'
       @runner.stop
+      @runner = nil
     end
+
+    @runner.start
   end
 
   class Runner
