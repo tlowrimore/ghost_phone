@@ -28,13 +28,14 @@ module GhostPhone
     end
 
     def stop
-      GhostPhone.logger.info "--- recorder stopping"
-      Process.kill("HUP", @pid) if @pid
-    end
+      return if @pid.nil?
 
-    def shutdown
-      GhostPhone.logger.info "--- recorder shutdown"
-      Process.kill("HUP", @pid) if @pid
+      GhostPhone.logger.info "--- recorder stopping"
+      Process.kill("HUP", @pid)
+      Process.detach(@pid)
+      @pid = nil
     end
+    alias_method :shutdown, :stop
+    
   end
 end
