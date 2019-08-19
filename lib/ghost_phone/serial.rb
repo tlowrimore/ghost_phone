@@ -3,6 +3,10 @@ require 'serialport'
 module GhostPhone
   class Serial
 
+    DATA_BITS     = 8
+    STOP_BITS     = 1
+    PARITY        = SerialPort::NONE
+
     attr_reader :port, :baud_rate
 
     def initialize(port, baud_rate)
@@ -43,7 +47,7 @@ module GhostPhone
     private
 
     def reader
-      @reader ||= SerialPort.new(port, baud_rate)
+      @reader ||= SerialPort.new(port, baud_rate, DATA_BITS, STOP_BITS, PARITY)
     end
   end
 end
