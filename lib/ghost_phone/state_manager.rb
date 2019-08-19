@@ -37,7 +37,7 @@ module GhostPhone
         end
 
       elsif event == EVENT_RELEASE
-        reset if key_hook?
+        reset if key == KEY_HOOK
       end
 
       self
