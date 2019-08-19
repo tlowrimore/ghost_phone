@@ -23,6 +23,8 @@ module GhostPhone
           callback.(value.strip)
         end
       end
+
+      @monitor.join
     end
 
     def stop
