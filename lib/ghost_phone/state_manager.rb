@@ -83,11 +83,11 @@ module GhostPhone
     end
 
     def play_tone?
-      dialing? && key_pressed? && key_tone?
+      (dialing? || recording?) && key_pressed? && key_tone?
     end
 
     def stop_tone?
-      dialing? && key_released? && key_tone?
+      (dialing? || recording?) && key_released? && key_tone?
     end
 
     # -----------------------------------------------------
