@@ -17,8 +17,8 @@ module GhostPhone
     Pathname.new File.expand_path('../', __dir__)
   end
 
-  def self.run
-    runner = new Runner
+  def self.start
+    runner = Runner.new
     runner.start
   end
 
