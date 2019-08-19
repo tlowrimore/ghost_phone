@@ -3,7 +3,7 @@ module GhostPhone
     SOUND_DIR = 'data/sound'
 
     DIAL_TONE = 'dial'
-    
+
     NAME_MAP  = {
       '#' => 'hash',
       '*' => 'star'
@@ -34,7 +34,8 @@ module GhostPhone
     end
 
     def stop
-      Process.kill("HUP", @pid) if @pid
+      GhostPhone.logger.info "--- shutting down sound player"
+      Process.kill("TERM", @pid) if @pid
     end
   end
 end

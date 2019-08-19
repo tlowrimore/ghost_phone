@@ -24,7 +24,8 @@ module GhostPhone
     end
 
     def stop
-      Process.kill("HUP", @pid) if @pid
+      GhostPhone.logger.info "--- shutting down message recorder"
+      Process.kill("TERM", @pid) if @pid
     end
   end
 end

@@ -21,7 +21,7 @@ module GhostPhone
   def self.logger
     @logger ||= begin
       formatter = Logger::Formatter.new
-      level     = ENV['LOG_LEVEL'] || :warn
+      level     = ENV['LOG_LEVEL'] || :info
 
       Logger.new(STDOUT, level: level).tap do |logger|
         logger.formatter = proc do |severity, datetime, progname, msg|
@@ -32,8 +32,14 @@ module GhostPhone
   end
 
   def self.start
-    runner = Runner.new
-    runner.start
+    return if @runner
+
+    @runner = Runner.new
+    @runner.start
+
+    Signal.trap("TERM") do
+      @runner.stop
+    end
   end
 
   class Runner
@@ -49,12 +55,18 @@ module GhostPhone
       @serial.monitor { |value| update(value) }
     end
 
+    def stop
+      @serial.stop
+      stop_tone
+      stop_recording
+    end
+
     def update(value)
-      GhostPhone.logger.info "--- updating state with: '#{value}'"
+      GhostPhone.logger.debug "--- updating state with: '#{value}'"
       event, key  = value[0], value[1]
       state       = @state_manager.update(event, key)
 
-      GhostPhone.logger.info "--- current state: #{state.inspect}"
+      GhostPhone.logger.debug "--- current state: #{state.inspect}"
 
       play_dial_tone                  if state.ready?
       play_tone(key)                  if state.play_tone?

@@ -19,10 +19,6 @@ module GhostPhone
     def monitor(&block)
       return unless @monitor.nil?
 
-      Signal.trap("INT") do
-        stop
-      end
-
       @monitor = Thread.new(reader, block) do |reader, callback|
         GhostPhone.logger.info "--- monitor thread started"
         while true
@@ -30,7 +26,8 @@ module GhostPhone
           callback.(value.chomp) unless value.nil?
         end
       end
-      GhostPhone.logger.info "--- monitor thread joining"
+
+      GhostPhone.logger.debug "--- monitor thread joining"
       @monitor.join
     end
 
