@@ -19,10 +19,6 @@ module GhostPhone
 
     def record
       @pid = fork do
-        Signal.trap("HUP") do
-          exit
-        end
-
         exec "arecord -f S16_LE -D plughw:1,0 -r 44100 #{file_path}"
       end
     end
@@ -36,6 +32,5 @@ module GhostPhone
       @pid = nil
     end
     alias_method :shutdown, :stop
-    
   end
 end
