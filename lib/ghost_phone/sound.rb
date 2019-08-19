@@ -34,7 +34,7 @@ module GhostPhone
     end
 
     def stop
-      GhostPhone.logger.info "--- shutting down sound player"
+      GhostPhone.logger.info "--- sound stopping"
       Process.kill("HUP", @pid) if @pid
     end
 

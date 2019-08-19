@@ -37,7 +37,13 @@ module GhostPhone
     @runner = Runner.new
     @runner.start
 
+    Signal.trap("INT") do
+      logger.info '--- shutting down'
+      @runner.stop
+    end
+
     Signal.trap("TERM") do
+      logger.warn '--- terminating!'
       @runner.stop
     end
   end
