@@ -3,6 +3,7 @@ require 'serialport'
 module GhostPhone
   class Serial
 
+    # Standard Arduino Serial Config
     DATA_BITS     = 8
     STOP_BITS     = 1
     PARITY        = SerialPort::NONE
