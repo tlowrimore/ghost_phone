@@ -29,16 +29,17 @@ module GhostPhone
 
     def play
       @pid = fork do
-        Process.setsid
         exec "aplay #{file_path}"
       end
     end
 
     def stop
+      return if @pid.nil
+
       GhostPhone.logger.info "--- sound stopping"
-      pgid = Process.getpgid(@pid)
-      Process.kill("HUP", -pgid) if @pid
-      Process.detach(pgid)
+      Process.kill("HUP", @pid)
+      Process.detach(@pid)
+      @pid = nil
     end
     alias_method :shutdown, :stop
   end
