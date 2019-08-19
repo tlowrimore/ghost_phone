@@ -19,17 +19,18 @@ module GhostPhone
       end
 
       @monitor = Thread.new(reader, block) do |reader, callback|
+        GhostPhone.logger.info "--- monitor thread started"
         reader.read do |value|
           callback.(value.strip)
         end
       end
-
+      GhostPhone.logger.info "--- monitor thread joining"
       @monitor.join
     end
 
     def stop
       return if @monitor.nil?
-
+      GhostPhone.logger.info "--- serial monitor stopping"
       reader.stop
       @monitor.kill
       @monitor = nil

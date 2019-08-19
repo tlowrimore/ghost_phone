@@ -1,4 +1,5 @@
 require 'pathname'
+require 'logger'
 
 require 'ghost_phone/message'
 require 'ghost_phone/serial'
@@ -17,6 +18,18 @@ module GhostPhone
     Pathname.new File.expand_path('../', __dir__)
   end
 
+  def self.logger
+    @logger ||= begin
+      formatter = Logger::Formatter.new
+
+      Logger.new(STDOUT, level: :info).tap do |logger|
+        logger.formatter = proc do |severity, datetime, progname, msg|
+          formatter.call(severity, datetime, progname, msg.dump)
+        end
+      end
+    end
+  end
+
   def self.start
     runner = Runner.new
     runner.start
@@ -31,10 +44,12 @@ module GhostPhone
     end
 
     def start
+      GhostPhone.logger.info "--- starting serial monitor"
       @serial.monitor { |value| update(value) }
     end
 
     def update(value)
+      GhostPhone.logger.info "--- updating state with: '#{value}'"
       event, key  = value[0], value[1]
       state       = @state_manager.update(event, key)
 
