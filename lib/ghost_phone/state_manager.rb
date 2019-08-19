@@ -27,7 +27,7 @@ module GhostPhone
 
         case key
         when KEY_HOOK
-          reset
+          pickup
         when KEY_STAR
           begin_recording
         else
@@ -35,7 +35,7 @@ module GhostPhone
         end
 
       elsif event == EVENT_RELEASE
-        pickup if key == KEY_HOOK
+        reset
       end
 
       self
