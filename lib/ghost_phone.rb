@@ -21,8 +21,9 @@ module GhostPhone
   def self.logger
     @logger ||= begin
       formatter = Logger::Formatter.new
+      level     = ENV['LOG_LEVEL'] || :warn
 
-      Logger.new(STDOUT, level: :info).tap do |logger|
+      Logger.new(STDOUT, level: level).tap do |logger|
         logger.formatter = proc do |severity, datetime, progname, msg|
           formatter.call(severity, datetime, progname, msg.dump)
         end
@@ -52,8 +53,8 @@ module GhostPhone
       GhostPhone.logger.info "--- updating state with: '#{value}'"
       event, key  = value[0], value[1]
       state       = @state_manager.update(event, key)
-      
-      GhostPhone.logger.info "--- current state: #{state}"
+
+      GhostPhone.logger.info "--- current state: #{state.inspect}"
 
       play_dial_tone                  if state.ready?
       play_tone(key)                  if state.play_tone?

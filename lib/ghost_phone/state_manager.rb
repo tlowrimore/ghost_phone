@@ -88,7 +88,7 @@ module GhostPhone
     end
 
     def stop_tone?
-      (dialing? || recording?) && key_released? && key_tone?
+      key_released? && key_tone?
     end
 
     # -----------------------------------------------------
