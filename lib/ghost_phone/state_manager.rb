@@ -48,8 +48,8 @@ module GhostPhone
     def reset
       GhostPhone.logger.info '--- resetting state'
       @state            = STATE_ON_HOOK
-      @event            = nil
-      @key              = nil
+      @event            = EVENT_RELEASE
+      @key              = KEY_HOOK
       @file_name_buffer = []
     end
 
@@ -117,9 +117,8 @@ module GhostPhone
         @state = STATE_RECORDING
       else
 
-        # Just start over if we get here!
+        GhostPhone.logger.error "--- An invalid state transition has occured!  Resetting!"
         reset
-        pickup
       end
     end
   end

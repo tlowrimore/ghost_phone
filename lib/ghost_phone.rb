@@ -53,6 +53,10 @@ module GhostPhone
     @runner.start
   end
 
+  # -----------------------------------------------------
+  # Runner
+  # -----------------------------------------------------
+
   class Runner
     def initialize
       @state_manager  = GhostPhone::StateManager.new
