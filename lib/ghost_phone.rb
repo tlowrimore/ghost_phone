@@ -40,12 +40,14 @@ module GhostPhone
       logger.info '--- shutting down'
       @runner.stop
       @runner = nil
+      exit
     end
 
     Signal.trap("TERM") do
       logger.warn '--- terminating!'
       @runner.stop
       @runner = nil
+      exit
     end
 
     @runner.start
