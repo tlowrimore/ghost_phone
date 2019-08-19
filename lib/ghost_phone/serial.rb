@@ -26,6 +26,7 @@ module GhostPhone
       @monitor = Thread.new(reader, block) do |reader, callback|
         GhostPhone.logger.info "--- monitor thread started"
         reader.read do |value|
+          GhostPhone.logger.info "--- monitor value received #{value}"
           callback.(value.strip)
         end
       end
