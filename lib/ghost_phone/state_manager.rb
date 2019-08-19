@@ -48,6 +48,7 @@ module GhostPhone
     end
 
     def reset
+      GhostPhone.logger.info '--- resetting state'
       @state            = STATE_ON_HOOK
       @event            = nil
       @key              = nil

@@ -52,6 +52,8 @@ module GhostPhone
       GhostPhone.logger.info "--- updating state with: '#{value}'"
       event, key  = value[0], value[1]
       state       = @state_manager.update(event, key)
+      
+      GhostPhone.logger.info "--- current state: #{state}"
 
       play_dial_tone                  if state.ready?
       play_tone(key)                  if state.play_tone?
