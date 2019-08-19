@@ -19,7 +19,7 @@ module GhostPhone
 
     def record
       @pid = fork do
-        exec "arecord -fcd #{file_path}"
+        exec "arecord -f S16_LE -D plughw:1,0 -r 44100 #{file_path}"
       end
     end
 
