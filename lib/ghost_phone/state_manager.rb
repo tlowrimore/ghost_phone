@@ -14,14 +14,16 @@ module GhostPhone
 
     NUMERIC = /\d/
 
-    attr_reader :state, :event, :key
+    attr_reader :state, :last_event, :last_key
 
     def initialize
       reset
     end
 
     def update(event, key)
-      @event  = event
+      GhostPhone.logger.debug "--- state update called with { event: '#{event}', key: '#{key}'}"
+
+      @last_event  = event
 
       if event == EVENT_PRESS
 
@@ -48,8 +50,8 @@ module GhostPhone
     def reset
       GhostPhone.logger.info '--- resetting state'
       @state            = STATE_ON_HOOK
-      @event            = EVENT_RELEASE
-      @key              = KEY_HOOK
+      @last_event       = EVENT_RELEASE
+      @last_key         = KEY_HOOK
       @file_name_buffer = []
     end
 
@@ -70,19 +72,19 @@ module GhostPhone
     end
 
     def key_pressed?
-      event == EVENT_PRESS
+      last_event == EVENT_PRESS
     end
 
     def key_released?
-      event == EVENT_RELEASE
+      last_event == EVENT_RELEASE
     end
 
     def key_tone?
-      key != KEY_HOOK
+      last_key != KEY_HOOK
     end
 
     def key_hook?
-      key == KEY_HOOK
+      last_key == KEY_HOOK
     end
 
     def play_tone?
@@ -100,20 +102,24 @@ module GhostPhone
     private
 
     def pickup
-      @state  = STATE_READY_FOR_INPUT
-      @key    = KEY_HOOK
+      GhostPhone.logger.debug "--- state transition: pickup"
+      @state    = STATE_READY_FOR_INPUT
+      @last_key = KEY_HOOK
     end
 
     def dial(key)
       if state == STATE_READY_FOR_INPUT || state == STATE_DIALING
+        GhostPhone.logger.debug "--- state transition dial:  { key: '#{key}' }"
+
         @state            = STATE_DIALING
-        @key              = key
+        @last_key         = key
         @file_name_buffer << key if key.to_s =~ NUMERIC
       end
     end
 
     def begin_recording
       if state == STATE_DIALING
+        GhostPhone.logger.debug "--- state transition recording"
         @state = STATE_RECORDING
       else
 

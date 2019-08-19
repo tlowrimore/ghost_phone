@@ -30,15 +30,15 @@ module GhostPhone
     def play
       @pid = fork do
         Signal.trap("HUP") do
-          GhostPhone.logger.info "--- sound stopping"
           exit
         end
-        
+
         exec "aplay #{file_path}"
       end
     end
 
     def stop
+      GhostPhone.logger.info "--- sound stopping"
       Process.kill("HUP", @pid) if @pid
     end
 
